@@ -10,3 +10,6 @@ temp_*.pdf
 *.egg-info/
 dist/
 .pytest_cache/
+.env
+.env.docker
+.env.*
