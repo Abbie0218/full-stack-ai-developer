@@ -1,0 +1,17 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routers import agent
+
+app = FastAPI(title="Agent API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_methods=['*'],
+    allow_headers=['*']
+)
+
+app.include_router(agent.router)
+@app.get("/")
+def root():
+    return {"message": "Agent API running"}

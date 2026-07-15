@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.db
+chroma_db/
+rag_db/
+chroma_langchain/
+temp_*.pdf
+*.egg-info/
+dist/
+.pytest_cache/

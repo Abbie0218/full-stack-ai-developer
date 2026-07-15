@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Streaming</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        #output { border: 1px solid #ccc; padding: 20px; min-height: 100px; white-space: pre-wrap; }
+        input { width: 70%; padding: 8px; }
+        button { padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>AI Streaming Chat</h2>
+    <div>
+        <input type="text" id="question" placeholder="Ask something..." />
+        <button onclick="startStream()">Ask</button>
+    </div>
+    <br>
+    <div id="output">Response will appear here...</div>
+
+    <script>
+        function startStream() {
+            const question = document.getElementById("question").value
+            const output = document.getElementById("output")
+            
+            // clear previous response
+            output.textContent = ""
+
+            // connect to SSE endpoint
+            const evtSource = new EventSource(
+                `http://localhost:8000/stream?question=${encodeURIComponent(question)}`
+            )
+
+            // receive each token
+            evtSource.onmessage = function(event) {
+                if (event.data === "[DONE]") {
+                    evtSource.close()  // stop listening
+                    return
+                }
+                output.textContent += event.data  // append token
+            }
+
+            // handle errors
+            evtSource.onerror = function() {
+                evtSource.close()
+            }
+        }
+    </script>
+</body>
+</html>
